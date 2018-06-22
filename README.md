@@ -1,4 +1,4 @@
-# Game.cpp
+# Puzzle-Game.cpp
 
 </p>
 <p align="center">
@@ -29,15 +29,14 @@
 
 ## Gameplay Example
 
-Launch the game first. You'll see this.
+* Launch the game first. You'll see this.
 
 ```
 Which size (NxN) do you want to play? Input N. (1<N<100)
  
 ```
 
-<br>
-Input the size N. For example N = 5.
+* Input the size N. For example N = 5.
 
 ```
 Which size (NxN) do you want to play? Input N. (1<N<100)
@@ -51,8 +50,7 @@ Which size (NxN) do you want to play? Input N. (1<N<100)
 Enter the number you want to move:
 ```
 
-<br>
-Then input the number you want to move. For example " **23** ".
+* Then input the number you want to move. For example " **23** ".
 
 ```
 23
@@ -64,8 +62,7 @@ Enter the number you want to move:
  19   6  10  11  17 
 ```
 
-<br>
-If you input a wrong number, it will print an " **error!!** " for you.
+* If you input a wrong number, it will print an " **error!!** " for you.
 
 ```
 1
@@ -78,8 +75,7 @@ Enter the number you want to move:
  19   6  10  11  17 
 ```
 
-<br>
-Then keep going until you finish, and you'll see this.
+* Then keep going until you finish, and you'll see this.
 
 ```
 20
@@ -91,12 +87,9 @@ Then keep going until you finish, and you'll see this.
 Finished! Great Job!
 ```
 
-</p>
 <p align="center">
-   
-**Go challenge yourself ! You can do it too !**
-<br>
-
+	<b>Go challenge yourself ! You can do it too !
+	<br>
 </p>
 
 
