@@ -1,12 +1,13 @@
-#Game.cpp
-
+# Game.cpp
 
 </p>
 <p align="center">
+   
 <img width="690" alt="2018-06-22 5 21 16" src="https://user-images.githubusercontent.com/40336920/41769166-fc8e6e38-7640-11e8-9994-837a688462b1.png">
+
 </p>
 
-##How to get in the Puzzle-Game?
+## How to get in the Puzzle-Game?
 
 1. Run the ***Puzzle-Game.cpp***.
 2. Enter the size you want to play.<br>
@@ -16,7 +17,7 @@
 
 <br>
 
-##Game rule
+## Game rule
 
 * The puzzle's size must larger than 1x1 and lower than 100x100.
 * You can only move the number that exists in the puzzle. 
@@ -26,7 +27,7 @@
 
 <br>
 
-##Gameplay Example
+## Gameplay Example
 
 Launch the game first. You'll see this.
 
@@ -92,8 +93,10 @@ Finished! Great Job!
 
 </p>
 <p align="center">
+   
 **Go challenge yourself ! You can do it too !**
 <br>
+
 </p>
 
 
