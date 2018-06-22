@@ -748,9 +748,9 @@ void PuzzleStack(int width){
 				for(int i=0; i>RD+1; i--){
 					swap_number('u');
 					swap_number('r');
-					swap_number('l');
-					swap_number('l');
 					swap_number('d');
+					swap_number('d');
+					swap_number('l');
 				}
 				swap_number('u');
 
