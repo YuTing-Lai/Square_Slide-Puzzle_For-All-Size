@@ -27,7 +27,7 @@
 
 <br>
 
-## Gameplay Example
+## GamePlay Example
 
 * Launch the game first. You'll see this.
 
