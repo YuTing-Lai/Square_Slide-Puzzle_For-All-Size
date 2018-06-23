@@ -112,10 +112,9 @@ Every Section (**「** ) seperate to **4 parts**.
 
 <img width="300" alt="2018-06-23 10 08 54" src="https://user-images.githubusercontent.com/40336920/41810492-10c2fea4-7732-11e8-9909-bdbbdd679563.png">
 
-</p>
-<p align="center">
-**↑ No difficulty at this part !**
-</p>
+
+**↑ No difficulty in this part !**
+
 
 <br>
 ***The Second Part:***
@@ -142,10 +141,8 @@ Every Section (**「** ) seperate to **4 parts**.
 
 <img width="300" alt="2018-06-23 11 03 37" src="https://user-images.githubusercontent.com/40336920/41810994-ea91788e-7739-11e8-8bde-affc8380ea86.png">
 
-</p>
-<p align="center">
-**↑ No difficulty at this part either !**
-</p>
+
+**↑ No difficulty in this part either !**
 <br>
 
 ***The Fourth Part:*** 
