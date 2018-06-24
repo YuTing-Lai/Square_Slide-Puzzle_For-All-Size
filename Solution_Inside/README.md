@@ -1,5 +1,12 @@
 # Puzzle Solution
 
+## Preface
+
+* This program's time complexity is **O(n<sup>5</sup>)** 
+* Size input larger than 50 is not recommended, it will take you a long time waiting.
+* Try to learn how to solve the puzzle by yourself during using this program. 
+
+<br>
 
 ## Solution Program
 
@@ -143,6 +150,7 @@ Every Section (**「** ) seperate to **4 parts**.
 
 
 **↑ No difficulty in this part either !**
+
 <br>
 
 ***The Fourth Part:*** 
