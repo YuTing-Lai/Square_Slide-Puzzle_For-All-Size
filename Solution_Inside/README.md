@@ -1,5 +1,37 @@
 # Puzzle Solution
 
+## What's new in the version2 ?
+
+* The new version can detect the numbers that are already put at the right place, no need to start from 1 now.
+* For example:  If you input a done puzzle  ↓
+
+```
+What it your puzzle's size (N x N)? Input N. (1<N<100)
+4
+Input the puzzle, from left to right, from up to down.
+If it is the blank, input 16.
+1 2 3 4
+5 6 7 8
+9 10 11 12
+13 14 15 16
+Your puzzle:
+  1   2   3   4 
+  5   6   7   8 
+  9  10  11  12 
+ 13  14  15     
+
+Nothing has to move!
+
+  1   2   3   4 
+  5   6   7   8 
+  9  10  11  12 
+ 13  14  15     
+
+Done!
+```
+
+* In the last version, it will need to start from 1. No need to do it now!
+
 ## Preface
 
 * This program's time complexity is **O(n<sup>5</sup>)** 
