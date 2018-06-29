@@ -18,18 +18,23 @@ using namespace std;
 
 int puzzle[101][101]={{0}};
 queue<string> move_step;
+int rowB,colB; //the blank's row and column
+int row,col,RD,CD;
+int pos;
 int size;
+int number;
+int total_numbers;
 
-void printMoveSteps(int number){
+void printMoveSteps(int n){
 	int nextLine = 1;
-	if(number == size*size){
+	if(n == size*size){
 		printf("Move the blank:\n");
 	}
-	else if(number == size*size - size - 1){
-		printf("Move %d and the blank:\n", number);
+	else if(n == size*size - size - 1){
+		printf("Move %d and the blank:\n", n);
 	}
 	else{
-		printf("Move %d:\n",number);
+		printf("Move %d:\n",n);
 	}
 
 	while(!move_step.empty()){
@@ -46,50 +51,45 @@ void printMoveSteps(int number){
 
 
 void print_puzzle(){
-	int s = size;
-	int length = log10(s*s) + 2;
-	for(int i=1; i<=s; i++){
-		for(int j=1; j<=s; j++){
-			if(puzzle[i][j] == s*s)
+	int length = log10(total_numbers) + 2;
+	for(int i=1; i<=size; i++){
+		for(int j=1; j<=size; j++){
+			if(puzzle[i][j] == total_numbers)
 				cout << setw(length) << " " << " ";
 			else
 			cout << setw(length) << puzzle[i][j] << " ";
 		}
 		cout << endl;
 	}
+	cout << endl;
 }
 
 void swap_number(char mode){
-	int s = size;
-	int N = s*s;
-	int pos;
-	for(pos=0; pos<N; pos++){
-		if(puzzle[pos/s +1][pos%s +1] == N)
-			break;
-	}
-	int row = pos/s + 1;
-	int col = pos%s + 1;
 
 	switch(mode)
 	{
 		case 'u':
-			puzzle[row][col] = puzzle[row-1][col];
-			puzzle[row-1][col] = N;
+			puzzle[rowB][colB] = puzzle[rowB-1][colB];
+			puzzle[rowB-1][colB] = total_numbers;
+			rowB--;
 			move_step.push("down");
 			break;
 		case 'd':
-			puzzle[row][col] = puzzle[row+1][col];
-			puzzle[row+1][col] = N;
+			puzzle[rowB][colB] = puzzle[rowB+1][colB];
+			puzzle[rowB+1][colB] = total_numbers;
+			rowB++;
 			move_step.push("up");
 			break;
 		case 'l':
-			puzzle[row][col] = puzzle[row][col-1];
-			puzzle[row][col-1] = N;
+			puzzle[rowB][colB] = puzzle[rowB][colB-1];
+			puzzle[rowB][colB-1] = total_numbers;
+			colB--;
 			move_step.push("right");
 			break;
 		case 'r':
-			puzzle[row][col] = puzzle[row][col+1];
-			puzzle[row][col+1] = N;
+			puzzle[rowB][colB] = puzzle[rowB][colB+1];
+			puzzle[rowB][colB+1] = total_numbers;
+			colB++;
 			move_step.push("left");
 			break;
 	}
@@ -97,42 +97,117 @@ void swap_number(char mode){
 
 }
 
+void find_the_blank(){
+	for(pos=0; pos<total_numbers; pos++){
+		if(puzzle[pos/size +1][pos%size +1] == total_numbers)
+			break;
+	}
+	rowB = pos/size + 1;
+	colB = pos%size + 1;
+
+}
+
+void find_the_number(int n){
+	for(pos=0; pos<total_numbers; pos++){
+		if(puzzle[pos/size +1][pos%size +1] == n)
+			break;
+	}
+	row = pos/size + 1;
+	col = pos%size + 1;
+}
+
+void cw_down(){
+	//clockwise ㄇ
+	swap_number('l');
+	swap_number('u');
+	swap_number('r');
+	swap_number('r');
+	swap_number('d');
+}
+
+void ccw_down(){
+	//counterclockwise ㄇ
+	swap_number('r');
+	swap_number('u');
+	swap_number('l');
+	swap_number('l');
+	swap_number('d');
+}
+
+void cw_up(){
+	//clockwise ㄩ
+	swap_number('r');
+	swap_number('d');
+	swap_number('l');
+	swap_number('l');
+	swap_number('u');
+}
+
+void ccw_up(){
+	//counterclockwise ㄩ
+	swap_number('l');
+	swap_number('d');
+	swap_number('r');
+	swap_number('r');
+	swap_number('u');
+}
+
+void cw_left(){
+	//clockwise ]
+	swap_number('u');
+	swap_number('r');
+	swap_number('d');
+	swap_number('d');
+	swap_number('l');
+}
+
+void ccw_left(){
+	//counterclockwise ]
+	swap_number('d');
+	swap_number('r');
+	swap_number('u');
+	swap_number('u');
+	swap_number('l');
+}
+
+void cw_right(){
+	//clockwise [
+	swap_number('d');
+	swap_number('l');
+	swap_number('u');
+	swap_number('u');
+	swap_number('r');
+}
+
+void ccw_right(){
+	//counterclockwise [
+	swap_number('u');
+	swap_number('l');
+	swap_number('d');
+	swap_number('d');
+	swap_number('r');
+}
+
 void Dual(){
-	int s = size;
-	int pos=0;
-	int number = s*s-s-1;
-	int N = s*s;
-	int row,col;
+	number = size*size-size-1;
 
 	//if the puzzle size is 2x2
-	if(s == 2){
-		//find the blank first
-		for(; pos<N; pos++){
-			if(puzzle[pos/s +1][pos%s +1] == N)
-				break;
-		}
-		row = pos/s + 1;
-		col = pos%s + 1;
+	if(size == 2){
 
 		//put the blank to the left-up-most of the small puzzle
-		if(row == s)
+		if(rowB == size)
 			swap_number('u');
-		if(col == s)
+		if(colB == size)
 			swap_number('l');
 	}
 
-	for(pos=0; pos<N; pos++){
-		if(puzzle[pos/s +1][pos%s +1] == number)
-			break;
-	}
-	row = pos/s + 1;
-	col = pos%s + 1;
+	find_the_number(number);
 
-	if( (col == s) && (row == s-1) ){
+	if( (col == size) && (row == size-1) ){
 		swap_number('r');
 		swap_number('d');
 	}
-	else if( (col == s-1) && (row == s) ){
+	else if( (col == size-1) && (row == size) ){
 		swap_number('d');
 		swap_number('r');
 	}
@@ -145,68 +220,29 @@ void Dual(){
 		swap_number('d');
 	}
 
-	printMoveSteps(N-s-1);
+	printMoveSteps(number);
 	print_puzzle();
-	cout << endl;
 
 }
 
-void PuzzleStack(int width){
-
-
-	int s = size;
-	int pos=0;
-	//five numbers: first, first+1, first+2, first+s, first+2s
-	int number = s*s - (width-1)*s -(width-1);
-	int N = s*s;
-	int row,col;
-
-	if(width == s){
-		//find the blank first
-		for(pos=0; pos<N; pos++){
-			if(puzzle[pos/s +1][pos%s +1] == N)
-				break;
-		}
-		int rowB = pos/s + 1;
-		int colB = pos%s + 1;
-
-		//move the blank to the left-up-most side of the puzzle
-		for(int i=0; i<rowB-1; i++){
-			swap_number('u');
-		}
-		for(int i=0; i<colB-1; i++){
-			swap_number('l');
-		}
-
-		printMoveSteps(N);
-		print_puzzle();
-		cout << endl;
-	}
 
 
 
-	while(number < (s*s - (width-1)*s)){
-		//Find the blank's position
-		for(pos=0; pos<N; pos++){
-			if(puzzle[pos/s +1][pos%s +1] == N)
-				break;
-		}
-		int rowB = pos/s + 1;
-		int colB = pos%s + 1;
+void segmentOne(int width){
+	//The first number
+	number = size*size - (width-1)*size -(width-1);
+
+	while(number < (size*size - (width-1)*size)){
 
 		//Find the number's position
-		for(pos=0; pos<N; pos++){
-			if(puzzle[pos/s +1][pos%s +1] == number)
-				break;
-		}
-		row = pos/s + 1;
-		col = pos%s + 1;
+		find_the_number(number);
+
 
 		//Find the row's and col's difference between blank and number
-		int RD = row - rowB;
-		int CD = col - colB;
+		RD = row - rowB;
+		CD = col - colB;
 
-		if( (row != rowB) && (col != colB) ){
+		if( (RD != 0) && (CD != 0) ){
 			//move the blank at the same row as the number
 			for(int i=0; i<RD; i++){
 				swap_number('d');
@@ -218,12 +254,8 @@ void PuzzleStack(int width){
 				}
 
 				for(int i=0; i<CD-1; i++){
-					//do counterclockwise ㄇ
-					swap_number('r');
-					swap_number('u');
-					swap_number('l');
-					swap_number('l');
-					swap_number('d');
+					//do the counterclockwise ㄇ
+					ccw_down();
 				}
 				swap_number('r');
 				swap_number('u');
@@ -236,14 +268,10 @@ void PuzzleStack(int width){
 					swap_number('l');
 				}
 
-				if(row == s){
+				if(row == size){
 					for(int i=0; i>CD+1; i--){
-						//do the clockwise |--|
-						swap_number('l');
-						swap_number('u');
-						swap_number('r');
-						swap_number('r');
-						swap_number('d');
+						//do the clockwise ㄇ
+						cw_down();
 					}
 					swap_number('l');
 					swap_number('u');
@@ -252,12 +280,8 @@ void PuzzleStack(int width){
 				}
 				else{
 					for(int i=0; i>CD; i--){
-						//do the counterclockwise |__|
-						swap_number('l');
-						swap_number('d');
-						swap_number('r');
-						swap_number('r');
-						swap_number('u');
+						//do the counterclockwise ㄩ
+						ccw_up();
 					}
 					swap_number('u');
 					swap_number('l');
@@ -266,28 +290,21 @@ void PuzzleStack(int width){
 			}
 			//now the number is at colB, and the blank is on the upside of the number
 			for(int i=0; i<RD-1; i++){
-				swap_number('d');
-				swap_number('r');
-				swap_number('u');
-				swap_number('u');
-				swap_number('l');
+				// do the counterclockwise ]
+				ccw_left();
 			}
 			swap_number('d');
 			swap_number('r');
 			swap_number('u');
 		}
-		else if(row == rowB){
+		else if(RD == 0){
 			//move the blank to the left side of the number
 			for(int i=0; i<CD-1; i++){
 				swap_number('r');
 			}
 			for(int i=0; i<CD-1; i++){
-				//do the clockwise |__|
-				swap_number('r');
-				swap_number('d');
-				swap_number('l');
-				swap_number('l');
-				swap_number('u');
+				//do the clockwise ㄩ
+				cw_up();
 			}
 			swap_number('r');
 		}
@@ -298,12 +315,8 @@ void PuzzleStack(int width){
 				swap_number('d');
 			}
 			for(int i=0; i<RD-1; i++){
-				//do the ]
-				swap_number('d');
-				swap_number('r');
-				swap_number('u');
-				swap_number('u');
-				swap_number('l');
+				//do the counterclockwise ]
+				ccw_left();
 			}
 			swap_number('d');
 			swap_number('r');
@@ -312,19 +325,21 @@ void PuzzleStack(int width){
 
 		printMoveSteps(number);
 		print_puzzle();
-		cout << endl;
 
 		//keep right going
 		number++;
 
 	}
 
+}
 
+
+void segmentTwo(int width){
 	//The right most number
 	//put the blank to the down side first
 	swap_number('d');
 	//check if it is fit
-	if(puzzle[s-width+1][s] == number){
+	if(puzzle[size-width+1][size] == number){
 		for(int i=0; i<width-1; i++){
 			swap_number('l');
 		}
@@ -332,18 +347,13 @@ void PuzzleStack(int width){
 	//try to put the right most number to row(s-width+2) col(s-1)
 	else{
 		swap_number('l');
-		int rowB = s-width+2;
-		int colB = s-1;
+		rowB = size-width+2;
+		colB = size-1;
 		//find where the right most number is
-		for(pos=0; pos<N; pos++){
-			if(puzzle[pos/s +1][pos%s +1] == number)
-				break;
-		}
-		row = pos/s + 1;
-		col = pos%s + 1;
+		find_the_number(number);
 
-		int RD = row - rowB;
-		int CD = col - colB;
+		RD = row - rowB;
+		CD = col - colB;
 
 		if( (RD != 0) && (CD != 0) ){
 			//move the blank to the same row as the number
@@ -366,12 +376,8 @@ void PuzzleStack(int width){
 				//move the number to the target col,
 				//and move the blank to the upside of the number
 				for(int i=0; i>CD+1; i--){
-					//do the clockwise |--|
-					swap_number('l');
-					swap_number('u');
-					swap_number('r');
-					swap_number('r');
-					swap_number('d');
+					//do the clockwise ㄇ
+					cw_down();
 				}
 				swap_number('l');
 				swap_number('u');
@@ -381,11 +387,7 @@ void PuzzleStack(int width){
 			//move the number to the target row
 			for(int i=0; i<RD-1; i++){
 				//do the clockwise [
-				swap_number('d');
-				swap_number('l');
-				swap_number('u');
-				swap_number('u');
-				swap_number('r');
+				cw_right();
 			}
 			swap_number('d');
 			swap_number('l');
@@ -393,11 +395,8 @@ void PuzzleStack(int width){
 		}
 		else if(RD == 0){
 			if(CD>0){
-				swap_number('r');
-				swap_number('d');
-				swap_number('l');
-				swap_number('l');
-				swap_number('u');
+				//do the clockwise ㄩ
+				cw_up();
 			}
 			else{
 				//move the blank to the right side of the number
@@ -406,11 +405,8 @@ void PuzzleStack(int width){
 				}
 				//move the number and the blank to the target place
 				for(int i=0; i>CD+1; i--){
-					swap_number('l');
-					swap_number('d');
-					swap_number('r');
-					swap_number('r');
-					swap_number('u');
+					//do the counterclockwise ㄩ
+					ccw_up();
 				}
 				swap_number('l');
 			}
@@ -423,11 +419,8 @@ void PuzzleStack(int width){
 			}
 			//put the number and the blank to the target place
 			for(int i=0; i<RD-1; i++){
-				swap_number('d');
-				swap_number('l');
-				swap_number('u');
-				swap_number('u');
-				swap_number('r');
+				//do the clockwise [
+				cw_right();
 			}
 			swap_number('d');
 			swap_number('l');
@@ -456,38 +449,28 @@ void PuzzleStack(int width){
 
 	}
 
+
 	printMoveSteps(number);
 	print_puzzle();
-	cout << endl;
 
 
-	/*
-	 * now go for the left side
-	 */
-	number = s*s - (width-2)*s - width+1;
+}
 
-	while(number < s*s-width+1){
-		//Find the blank's position
-		for(pos=0; pos<N; pos++){
-			if(puzzle[pos/s +1][pos%s +1] == N)
-				break;
-		}
-		int rowB = pos/s + 1;
-		int colB = pos%s + 1;
+
+void segmentThree(int width){
+	number = size*size - (width-2)*size - width+1;
+
+	while(number < size*size-width+1){
 
 		//Find the number's position
-		for(pos=0; pos<N; pos++){
-			if(puzzle[pos/s +1][pos%s +1] == number)
-				break;
-		}
-		row = pos/s + 1;
-		col = pos%s + 1;
+		find_the_number(number);
+
 
 		//Find the row's and col's difference between blank and number
-		int RD = row - rowB;
-		int CD = col - colB;
+		RD = row - rowB;
+		CD = col - colB;
 
-		if( (row != rowB) && (col != colB) ){
+		if( (RD != 0) && (CD != 0) ){
 			//move the blank to the same col as the number
 			for(int i=0; i<CD; i++){
 				swap_number('r');
@@ -499,14 +482,10 @@ void PuzzleStack(int width){
 					swap_number('u');
 				}
 				//move the number to the same row and move the blank to the left side of the number
-				if(col == s){
+				if(col == size){
 					for(int i=0; i>RD+1; i--){
 						//do counterclockwise [
-						swap_number('u');
-						swap_number('l');
-						swap_number('d');
-						swap_number('d');
-						swap_number('r');
+						ccw_right();
 					}
 					swap_number('u');
 					swap_number('l');
@@ -515,11 +494,7 @@ void PuzzleStack(int width){
 				else{
 					for(int i=0; i>RD; i--){
 						//do clockwise ]
-						swap_number('u');
-						swap_number('r');
-						swap_number('d');
-						swap_number('d');
-						swap_number('l');
+						cw_left();
 					}
 					swap_number('l');
 					swap_number('u');
@@ -534,11 +509,8 @@ void PuzzleStack(int width){
 				}
 				//move the number to the target row
 				for(int i=0; i<RD-1; i++){
-					swap_number('d');
-					swap_number('l');
-					swap_number('u');
-					swap_number('u');
-					swap_number('r');
+					//do the clockwise [
+					cw_right();
 				}
 				swap_number('d');
 				swap_number('l');
@@ -548,12 +520,8 @@ void PuzzleStack(int width){
 			//now they at the same row
 			//move the number inside
 			for(int i=0; i<CD-1; i++){
-				//do the clockwise|__|
-				swap_number('r');
-				swap_number('d');
-				swap_number('l');
-				swap_number('l');
-				swap_number('u');
+				//do the clockwise ㄩ
+				cw_up();
 			}
 			swap_number('r');
 			swap_number('d');
@@ -566,12 +534,8 @@ void PuzzleStack(int width){
 			}
 
 			for(int i=0; i<CD-1; i++){
-				//do the clockwise |__|
-				swap_number('r');
-				swap_number('d');
-				swap_number('l');
-				swap_number('l');
-				swap_number('u');
+				//do the clockwise ㄩ
+				cw_up();
 			}
 			swap_number('r');
 			swap_number('d');
@@ -586,11 +550,7 @@ void PuzzleStack(int width){
 
 			for(int i=0; i<RD-1; i++){
 				//do the counterclockwise ]
-				swap_number('d');
-				swap_number('r');
-				swap_number('u');
-				swap_number('u');
-				swap_number('l');
+				ccw_left();
 			}
 			swap_number('d');
 
@@ -598,36 +558,32 @@ void PuzzleStack(int width){
 
 		printMoveSteps(number);
 		print_puzzle();
-		cout << endl;
 
 		//go for the next number
-		number+=s;
+		number+=size;
 
 	}
 
-	/*
-	 * try to put the down-left-most number inside
-	 */
+}
 
+void segmentFour(int width){
 	swap_number('r');
 	//check if it is fit
-	if(puzzle[s][s-width+1] == (s*s-width+1) ){
+	if(puzzle[size][size-width+1] == (number) ){
 		for(int i=0; i<width-2; i++){
 			swap_number('u');
 		}
-
-
 	}
 	//if the puzzle is 3*3
 	else if(width == 3){
 		//try to put the number to row(s) col(s) and the blank to row(s) col(s-1)
-		if(puzzle[s-1][s] == number){
+		if(puzzle[size-1][size] == number){
 			swap_number('r');
 			swap_number('u');
 			swap_number('l');
 			swap_number('d');
 		}
-		else if(puzzle[s-1][s-1] == number){
+		else if(puzzle[size-1][size-1] == number){
 			swap_number('u');
 			swap_number('r');
 			swap_number('d');
@@ -652,20 +608,13 @@ void PuzzleStack(int width){
 		//move the blank to rol(s-1) col(s-width+2)
 		swap_number('u');
 
-		int rowB = s-1;
-		int colB = s-width+2;
 
 		//Find the number's position
-		for(pos=0; pos<N; pos++){
-			if(puzzle[pos/s +1][pos%s +1] == number)
-				break;
-		}
-		row = pos/s + 1;
-		col = pos%s + 1;
+		find_the_number(number);
 
 		//Find the row's and col's difference between blank and number
-		int RD = row - rowB;
-		int CD = col - colB;
+		RD = row - rowB;
+		CD = col - colB;
 
 		if( (RD != 0) && (CD != 0) ){
 			//move to the same col as the number
@@ -686,11 +635,8 @@ void PuzzleStack(int width){
 
 				//move the number to the target row
 				for(int i=0; i>RD+1; i--){
-					swap_number('u');
-					swap_number('l');
-					swap_number('d');
-					swap_number('d');
-					swap_number('r');
+					//do the counterclockwise [
+					ccw_right();
 				}
 				swap_number('u');
 				swap_number('l');
@@ -700,12 +646,8 @@ void PuzzleStack(int width){
 			//now the number is at the target row, move it to the target col
 			//and move the blank to row(s=2) col(s-width+2)
 			for(int i=0; i<CD-1; i++){
-				//do the clockwise |__|
-				swap_number('r');
-				swap_number('d');
-				swap_number('l');
-				swap_number('l');
-				swap_number('u');
+				//do the clockwise ㄩ
+				cw_up();
 			}
 			swap_number('r');
 			swap_number('u');
@@ -718,12 +660,8 @@ void PuzzleStack(int width){
 			}
 			//move the number and the blank to the target place
 			for(int i=0; i<CD-1; i++){
-				//do the clockwise|__|
-				swap_number('r');
-				swap_number('d');
-				swap_number('l');
-				swap_number('l');
-				swap_number('u');
+				//do the clockwise ㄩ
+				cw_up();
 			}
 			swap_number('r');
 			swap_number('u');
@@ -732,11 +670,8 @@ void PuzzleStack(int width){
 		//CD == 0
 		else{
 			if(RD>0){
-				swap_number('d');
-				swap_number('r');
-				swap_number('u');
-				swap_number('u');
-				swap_number('l');
+				//do the counterclockwise ]
+				ccw_left();
 			}
 			else{
 				//move the blank to the down side of the number
@@ -746,11 +681,8 @@ void PuzzleStack(int width){
 
 				//move the number and the blank to the target place
 				for(int i=0; i>RD+1; i--){
-					swap_number('u');
-					swap_number('r');
-					swap_number('d');
-					swap_number('d');
-					swap_number('l');
+					//do the clockwise ]
+					cw_left();
 				}
 				swap_number('u');
 
@@ -778,9 +710,40 @@ void PuzzleStack(int width){
 
 	printMoveSteps(number);
 	print_puzzle();
-	cout << endl;
 
-	//go for next 「
+}
+
+void PuzzleStack(int width){
+
+	find_the_blank();
+
+	if(width == size){
+
+		row = rowB-1;
+		col = colB-1;
+
+		//move the blank to the left-up-most side of the puzzle
+		for(int i=0; i<row; i++){
+			swap_number('u');
+		}
+		for(int i=0; i<col; i++){
+			swap_number('l');
+		}
+
+		printMoveSteps(total_numbers);
+		print_puzzle();
+	}
+
+
+	segmentOne(width);
+
+	segmentTwo(width);
+
+	segmentThree(width);
+
+	segmentFour(width);
+
+	//go for the rest puzzle
 	if(width == 3){
 		Dual();
 	}
@@ -788,14 +751,20 @@ void PuzzleStack(int width){
 		PuzzleStack(width-1);
 	}
 
-
 }
 
 
 int main() {
+	size=0;
 	//Input puzzle's size
-	cout << "What it your puzzle's size (N x N)? Input N. (1<N<100)" << endl;
-	scanf("%d", &size);
+	while(size<2 || size>99){
+		cout << "What it your puzzle's size (N x N)? Input N. (1<N<100)" << endl;
+		scanf("%d", &size);
+	}
+	total_numbers = size*size;
+
+
+
 
 	//Input puuzle's numbers
 	cout << "Input the puzzle, from left to right, from up to down." << endl;
@@ -808,7 +777,6 @@ int main() {
 
 	printf("Your puzzle:\n");
 	print_puzzle();
-	cout << endl;
 
 	//go for solving the puzzle
 	if(size == 2)
@@ -829,4 +797,3 @@ int main() {
 
 	return 0;
 }
-
