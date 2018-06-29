@@ -14,10 +14,12 @@
 #include <cstring>
 #include <queue>
 #include <cmath>
+#include <vector>
 using namespace std;
 
 int puzzle[101][101]={{0}};
 queue<string> move_step;
+vector< pair<int, int> > number_pos;
 int rowB,colB; //the blank's row and column
 int row,col,RD,CD;
 int pos;
@@ -71,24 +73,28 @@ void swap_number(char mode){
 		case 'u':
 			puzzle[rowB][colB] = puzzle[rowB-1][colB];
 			puzzle[rowB-1][colB] = total_numbers;
+			number_pos[puzzle[rowB][colB]].first++;
 			rowB--;
 			move_step.push("down");
 			break;
 		case 'd':
 			puzzle[rowB][colB] = puzzle[rowB+1][colB];
 			puzzle[rowB+1][colB] = total_numbers;
+			number_pos[puzzle[rowB][colB]].first--;
 			rowB++;
 			move_step.push("up");
 			break;
 		case 'l':
 			puzzle[rowB][colB] = puzzle[rowB][colB-1];
 			puzzle[rowB][colB-1] = total_numbers;
+			number_pos[puzzle[rowB][colB]].second++;
 			colB--;
 			move_step.push("right");
 			break;
 		case 'r':
 			puzzle[rowB][colB] = puzzle[rowB][colB+1];
 			puzzle[rowB][colB+1] = total_numbers;
+			number_pos[puzzle[rowB][colB]].second--;
 			colB++;
 			move_step.push("left");
 			break;
@@ -98,22 +104,14 @@ void swap_number(char mode){
 }
 
 void find_the_blank(){
-	for(pos=0; pos<total_numbers; pos++){
-		if(puzzle[pos/size +1][pos%size +1] == total_numbers)
-			break;
-	}
-	rowB = pos/size + 1;
-	colB = pos%size + 1;
+	rowB = number_pos[total_numbers].first;
+	colB = number_pos[total_numbers].second;
 
 }
 
 void find_the_number(int n){
-	for(pos=0; pos<total_numbers; pos++){
-		if(puzzle[pos/size +1][pos%size +1] == n)
-			break;
-	}
-	row = pos/size + 1;
-	col = pos%size + 1;
+	row = number_pos[n].first;
+	col = number_pos[n].second;
 }
 
 void cw_down(){
@@ -236,7 +234,6 @@ void segmentOne(int width){
 
 		//Find the number's position
 		find_the_number(number);
-
 
 		//Find the row's and col's difference between blank and number
 		RD = row - rowB;
@@ -705,7 +702,6 @@ void segmentFour(int width){
 			swap_number('u');
 		}
 
-
 	}
 
 	printMoveSteps(number);
@@ -715,7 +711,7 @@ void segmentFour(int width){
 
 void PuzzleStack(int width){
 
-	find_the_blank();
+
 
 	if(width == size){
 
@@ -763,17 +759,24 @@ int main() {
 	}
 	total_numbers = size*size;
 
-
+	number_pos.resize(total_numbers+1);
 
 
 	//Input puuzle's numbers
 	cout << "Input the puzzle, from left to right, from up to down." << endl;
 	cout << "If it is the blank, input " << size*size << "." << endl;
 	int puzzle_number;
+	pair<int,int> ppos;
 	for(int i=0; i<size*size; i++){
 		cin >> puzzle_number;
 		puzzle[i/size +1][i%size +1] = puzzle_number;
+		ppos.first = i/size +1;
+		ppos.second = i%size +1;
+		number_pos[puzzle_number] = ppos;
 	}
+
+	find_the_blank();
+
 
 	printf("Your puzzle:\n");
 	print_puzzle();
