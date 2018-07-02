@@ -1,7 +1,7 @@
 Puzzle-Game:Puzzle-Game.o
-	$(cc) -o $@ $^
+	cc -o $@ $^
 .c.o:
-	$(cc) -c $<
+	cc -c $<
 
 clean:
 	rm -r Puzzle-Game.o
