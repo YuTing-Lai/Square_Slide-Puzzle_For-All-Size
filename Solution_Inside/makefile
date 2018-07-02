@@ -1,8 +1,9 @@
 Puzzle-Solution:Puzzle-Solution.o
-	cc $< -o $@
+	g++ $< -o $@
 
 %.o:%.c
-	cc -c $< -o $@
+	g++ -c $< -o $@
 
 clean:
 	rm -fr Puzzle-Solution.o
+	rm -fr Puzzle-Solution
