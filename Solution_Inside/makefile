@@ -1,7 +1,7 @@
 Puzzle-Solution:Puzzle-Solution.o
 	g++ $< -o $@
 
-%.o:%.c
+%.o:%.cpp
 	g++ -c $< -o $@
 
 clean:
